@@ -1,0 +1,15 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  test-db:
+    lang: python3-debian
+    handler: ./test-db
+    image: registry.localhost:5000/test-db:latest
+    environment:
+      mongo_host: mongo.default.svc.cluster.local:27017
+      write_debug: true
+      combine_output: false
+    secrets:
+    - mongo-db-password
