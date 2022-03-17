@@ -1,5 +1,5 @@
 **Note:** that in our case we are using sudo before kubectl because we setup the cluster using k3d, if for example we set it up using kubeadm in a real development environment this would be of no use.
-If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/kubeadm_tutorial/README.md).
+If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/kubeadm_tutorial/README.md).
 
 # Deploying openfaas on a local k3d cluster
 
