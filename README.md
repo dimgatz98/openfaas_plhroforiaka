@@ -1,5 +1,8 @@
+*This tutorial has only been tested on ubuntu 18.04 and 20.04*
+
 **Note:** that in our case we are using sudo before kubectl because we setup the cluster using k3d, if for example we set it up using kubeadm in a real development environment this would be of no use.
 If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/kubeadm_tutorial/README.md).
+
 
 # Deploying openfaas on a local k3d cluster
 
@@ -167,6 +170,21 @@ echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
 cd test-db-function/
 sudo faas-cli up -f test-db.yml --label com.openfaas.scale.max=3 --label com.openfaas.scale.min=3
 cd ../
+```
+
+Now you are ready to hit the endpoint either via browser (by visiting http://localhost:8080/) and making manual requests or via the terminal by executing either one of the following commands:
+``` bash
+# For adding user with username "random_user" in mongodb:
+curl -X POST -d "random_user" http://localhost:8080/function/test-db
+# or 
+curl -X PUT -d "random_user" http://localhost:8080/function/test-db
+# For querying all data in database:
+curl -X GET http://localhost:8080/function/test-db
+# For deleting user with username "random_user"
+curl -X DELETE -d "random_user" http://localhost:8080/function/test-db
+# Check the keys again:
+curl -X GET http://localhost:8080/function/test-db
+# Output should be empty after deletion
 ```
 
 # Metrics
