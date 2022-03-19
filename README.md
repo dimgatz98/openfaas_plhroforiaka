@@ -72,17 +72,6 @@ To install arkade run:
 curl -sLS https://get.arkade.dev | sudo sh
 ```
 
-## 4.Openfaas
-
-TO install openfaas using arkade run:
-``` bash
-# Install openfaas
-sudo arkade install openfaas
-# Install faas-cli
-arkade get faas-cli
-# and now move it to the /usr/local/bin/ folder for terminal to find it
-sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
-```
 ### Now that we have all the Prerequisites we can create a k3d cluster with 3 agents and connect it to the registry
 
 # Create k3d cluster with 3 agents
@@ -94,6 +83,18 @@ cd ../
 ``` 
 ``` bash
 sudo docker network connect k3d-k3s-default registry.localhost
+```
+
+# Install OpenFaas using arkade
+
+To install openfaas using arkade run:
+``` bash
+# Install openfaas
+sudo arkade install openfaas
+# Install faas-cli
+arkade get faas-cli
+# and now move it to the /usr/local/bin/ folder for terminal to find it
+sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
 ```
 
 # Deploy mongodb stateful set and create replica set within it:
