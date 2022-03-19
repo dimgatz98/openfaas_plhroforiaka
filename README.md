@@ -1,5 +1,8 @@
+*This tutorial has only been tested on ubuntu 18.04 and 20.04*
+
 **Note:** that in our case we are using sudo before kubectl because we setup the cluster using k3d, if for example we set it up using kubeadm in a real development environment this would be of no use.
-If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/kubeadm_tutorial/README.md).
+If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/kubeadm_tutorial/README.md).
+
 
 # Deploying openfaas on a local k3d cluster
 
@@ -69,6 +72,7 @@ To install arkade run:
 curl -sLS https://get.arkade.dev | sudo sh
 ```
 
+<<<<<<< HEAD
 ## 4.Openfaas
 
 TO install openfaas using arkade run:
@@ -84,6 +88,8 @@ arkade get faas-cli
 # and now move it to the /usr/local/bin/ folder for terminal to find it
 sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
 ```
+=======
+>>>>>>> f1169c46ea64ec9398a50669d4422983a01c83aa
 ### Now that we have all the Prerequisites we can create a k3d cluster with 3 agents and connect it to the registry
 
 # Create k3d cluster with 3 agents
@@ -95,6 +101,18 @@ cd ../
 ``` 
 ``` bash
 sudo docker network connect k3d-k3s-default registry.localhost
+```
+
+# Install OpenFaas using arkade
+
+To install openfaas using arkade run:
+``` bash
+# Install openfaas
+sudo arkade install openfaas
+# Install faas-cli
+arkade get faas-cli
+# and now move it to the /usr/local/bin/ folder for terminal to find it
+sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
 ```
 
 # Deploy mongodb stateful set and create replica set within it:
@@ -178,6 +196,21 @@ sudo faas-cli up -f test-db.yml --label com.openfaas.scale.max=2 --label com.ope
 cd ../
 # You can also always check the "queue-worker"'s logs like that
 sudo kubectl logs deploy/queue-worker -n openfaas -f
+```
+
+Now you are ready to hit the endpoint either via browser (by visiting http://localhost:8080/) and making manual requests or via the terminal by executing either one of the following commands:
+``` bash
+# For adding user with username "random_user" in mongodb:
+curl -X POST -d "random_user" http://localhost:8080/function/test-db
+# or 
+curl -X PUT -d "random_user" http://localhost:8080/function/test-db
+# For querying all data in database:
+curl -X GET http://localhost:8080/function/test-db
+# For deleting user with username "random_user"
+curl -X DELETE -d "random_user" http://localhost:8080/function/test-db
+# Check the keys again:
+curl -X GET http://localhost:8080/function/test-db
+# Output should be empty after deletion
 ```
 
 # Metrics
