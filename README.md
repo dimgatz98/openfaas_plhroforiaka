@@ -75,7 +75,7 @@ curl -sLS https://get.arkade.dev | sudo sh
 <<<<<<< HEAD
 ## 4.Openfaas
 
-TO install openfaas using arkade run:
+To install openfaas using arkade, run the following:
 ``` bash
 # Install openfaas for synchronous requests
 sudo arkade install openfaas
