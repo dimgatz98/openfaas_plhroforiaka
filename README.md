@@ -73,8 +73,12 @@ curl -sLS https://get.arkade.dev | sudo sh
 
 TO install openfaas using arkade run:
 ``` bash
-# Install openfaas
+# Install openfaas for synchronous requests
 sudo arkade install openfaas
+# In the case that you want to use queue workers and make asynchronous requests to openfaas functions you have to use this command instead
+sudo arkade install openfaas --max-inflight=2
+# For more info on async requests check this:
+# https://docs.openfaas.com/reference/async/
 # Install faas-cli
 arkade get faas-cli
 # and now move it to the /usr/local/bin/ folder for terminal to find it
@@ -163,10 +167,17 @@ PASSWORD=$(sudo kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.ba
 echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
 ```
 ### And now we are ready to deploy test-db, also with 3 replica as in mongo:
+### The function we made is a simple function that leverages mongodb persistent storage to save the usernames of people we want to follow on social media. POST/PUT adds a new record in the db(no duplicates allowed), GET returns the list of people we have saved and DELETE deletes a user if he exists
 ``` bash
 cd test-db-function/
+# If you want to use asynchronous requests you have to define max-inflight as an environment variable
+# synchronous example
 sudo faas-cli up -f test-db.yml --label com.openfaas.scale.max=3 --label com.openfaas.scale.min=3
+# asynchronous example
+sudo faas-cli up -f test-db.yml --label com.openfaas.scale.max=2 --label com.openfaas.scale.min=2 --env max_inflight=1000
 cd ../
+# You can also always check the "queue-worker"'s logs like that
+sudo kubectl logs deploy/queue-worker -n openfaas -f
 ```
 
 # Metrics

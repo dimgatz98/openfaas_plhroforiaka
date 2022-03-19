@@ -129,7 +129,9 @@ EOF
 # In case you are using zsh as the default shell for your user you could use the same command as above by replacing "bashrc" either with "zshrc" or "profile"
 ```
 
-Now all you have to do is install helm for installing prometheus and grafana
+## From now on you can follow the main tutorial (k3d tutorial) in order to install prometheus and grafana using arkade, however in the following guide we will also show how to install prometheus and grafana using helm: 
+
+Install helm which we will use for installing prometheus and grafana
 ``` bash
 # install helm
 curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
@@ -138,7 +140,6 @@ echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt
 sudo apt-get update
 sudo apt-get install helm
 ```
-
 ```bash
 # install prom and grafana
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -151,4 +152,4 @@ helm install prometheus prometheus-community/kube-prometheus-stack
 
 kubectl port-forward deployment/prometheus-grafana 3000
 ```
-Verify the installation by visiting http:localhost:3000 and then the rest are exactly the same as in the main doc
+Verify the installation by visiting http:localhost:3000 and then the rest are exactly the same as in the main doc with the only difference that whenever you use "kubectl" you have to ommit "sudo"
