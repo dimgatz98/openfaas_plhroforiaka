@@ -72,7 +72,6 @@ To install arkade run:
 curl -sLS https://get.arkade.dev | sudo sh
 ```
 
-<<<<<<< HEAD
 ## 4.Openfaas
 
 To install openfaas using arkade, run the following:
@@ -88,8 +87,6 @@ arkade get faas-cli
 # and now move it to the /usr/local/bin/ folder for terminal to find it
 sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
 ```
-=======
->>>>>>> f1169c46ea64ec9398a50669d4422983a01c83aa
 ### Now that we have all the Prerequisites we can create a k3d cluster with 3 agents and connect it to the registry
 
 # Create k3d cluster with 3 agents
