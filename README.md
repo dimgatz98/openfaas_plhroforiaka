@@ -56,13 +56,6 @@ To install it run the following commands:
 wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 ```
 
-### Create k3d cluster with 3 agents
-
-``` bash
-cd k3d_registries
-sudo k3d cluster create --volume $PWD/k3d-registries.yml:/etc/rancher/k3s/registries.yaml --agents 3
-cd ../
-``` 
 ``` bash
 sudo docker network connect k3d-k3s-default registry.localhost
 ```
@@ -75,6 +68,13 @@ sudo docker volume create local_registry
 # Let's start the containerized registry
 sudo docker container run -d --name registry.localhost -v local_registry:/var/lib/registry --restart always -p 5000:5000 registry:2
 ```
+### Create k3d cluster with 3 agents
+
+``` bash
+cd k3d_registries
+sudo k3d cluster create --volume $PWD/k3d-registries.yml:/etc/rancher/k3s/registries.yaml --agents 3
+cd ../
+``` 
 
 ## 3. arkade
 arkade provides a portable marketplace for downloading your favourite devops CLIs and installing helm charts, with a single command.
