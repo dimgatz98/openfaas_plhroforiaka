@@ -55,6 +55,18 @@ To install it run the following commands:
 ``` bash
 wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 ```
+
+### Create k3d cluster with 3 agents
+
+``` bash
+cd k3d_registries
+sudo k3d cluster create --volume $PWD/k3d-registries.yml:/etc/rancher/k3s/registries.yaml --agents 3
+cd ../
+``` 
+``` bash
+sudo docker network connect k3d-k3s-default registry.localhost
+```
+
 ``` bash
 # Let's create the volume we are going to use as the registry for openfaas to push and pull images among the pods
 sudo docker volume create local_registry
@@ -87,30 +99,7 @@ arkade get faas-cli
 # and now move it to the /usr/local/bin/ folder for terminal to find it
 sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
 ```
-### Now that we have all the Prerequisites we can create a k3d cluster with 3 agents and connect it to the registry
-
-# Create k3d cluster with 3 agents
-
-``` bash
-cd k3d_registries
-sudo k3d cluster create --volume $PWD/k3d-registries.yml:/etc/rancher/k3s/registries.yaml --agents 3
-cd ../
-``` 
-``` bash
-sudo docker network connect k3d-k3s-default registry.localhost
-```
-
-# Install OpenFaas using arkade
-
-To install openfaas using arkade run:
-``` bash
-# Install openfaas
-sudo arkade install openfaas
-# Install faas-cli
-arkade get faas-cli
-# and now move it to the /usr/local/bin/ folder for terminal to find it
-sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
-```
+### Now that we have all the Prerequisites we can start with the deployments
 
 # Deploy mongodb stateful set and create replica set within it:
 
