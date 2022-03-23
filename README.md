@@ -203,7 +203,7 @@ curl -X GET http://localhost:8080/function/test-db
 
 # Metrics
 
-We can use prometheus and grafana.
+In order to export our metrics we will be using Prometheus along with Grafana in order to graph them.
 
 Prometheus is free and an open-source event monitoring tool for containers or microservices. Prometheus collects numerical data based on time series. The Prometheus server works on the principle of scraping. This invokes the metric endpoint of the various nodes that have been configured to monitor. These metrics are collected in regular timestamps and stored locally. The endpoint that was used to discard is exposed on the node.
 
