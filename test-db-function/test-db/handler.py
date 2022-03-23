@@ -53,6 +53,15 @@ def handle(req):
         db = client['openfaas']
         followers = db.followers
 
+        if req.strip() == "all":
+            followers.drop()
+            return "Collection deleted"
+
+        for follower in followers.find():
+            if follower[u'username'] == req.strip():
+                found = True
+                break    
+
         found = False
         for follower in followers.find():
             if follower[u'username'] == req.strip():
