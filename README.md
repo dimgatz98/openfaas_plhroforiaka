@@ -153,14 +153,6 @@ db.createUser({user: "root",pwd: "123",roles: [ "root" ]})
 exit
 ```
 
-## Create openfaas secret to store root password:
-``` bash
-export MONGODB_ROOT_PASSWORD="123"
-```
-## port forward openfaas and login from terminal:
-``` bash
-faas-cli secret create mongo-db-password --from-literal $MONGODB_ROOT_PASSWORD
-```
 ### Now port-fortward openfaas' service and login via your terminal:
 ``` bash
 # port forward
@@ -169,6 +161,16 @@ sudo kubectl port-forward -n openfaas svc/gateway 8080:8080
 PASSWORD=$(sudo kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
 # login using the variable
 echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
+```
+
+## Create openfaas secret to store root password:
+``` bash
+# In a new terminal
+export MONGODB_ROOT_PASSWORD="123"
+```
+## port forward openfaas and login from terminal:
+``` bash
+faas-cli secret create mongo-db-password --from-literal $MONGODB_ROOT_PASSWORD
 ```
 ### And now we are ready to deploy test-db, also with 3 replica as in mongo:
 ### The function we made is a simple function that leverages mongodb persistent storage to save the usernames of people we want to follow on social media. POST/PUT adds a new record in the db(no duplicates allowed), GET returns the list of people we have saved and DELETE deletes a user if he exists
