@@ -173,7 +173,7 @@ export MONGODB_ROOT_PASSWORD="123"
 faas-cli secret create mongo-db-password --from-literal $MONGODB_ROOT_PASSWORD
 ```
 ### And now we are ready to deploy test-db, also with 3 replica as in mongo:
-### The function we made is a simple function that leverages mongodb persistent storage to save the usernames of people we want to follow on social media. POST/PUT adds a new record in the db(no duplicates allowed), GET returns the list of people we have saved and DELETE deletes a user if he exists
+### The function we made is a simple function that leverages mongodb persistent storage to save the usernames of people we want to follow on social media. POST/PUT adds a new record in the db(no duplicates allowed), GET returns the list of people we have saved and DELETE deletes a user if he exists(you can also provide "all" in request body data in order to drop the whole collection)
 ``` bash
 cd test-db-function/
 # If you want to use asynchronous requests you have to define max-inflight as an environment variable
@@ -275,6 +275,7 @@ Now, start the JMeter application with the following command:
 ./jmeter
 ```
 You should see the JMeter interface. From there you can generate your load in order to monitor your system.
+**Note:** In jmeter requests body data you can provide the option "${__UUID()}" in order to require jmeter to add a different UUID in each request's data since our database makes sure that the post request's data(username) is different than all existing followers currently in the database before adding the new record.  
 
 ### To monitor the health and behavior of our function we have to:
 
