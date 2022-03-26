@@ -277,6 +277,8 @@ Now, start the JMeter application with the following command:
 You should see the JMeter interface. From there you can generate your load in order to monitor your system.
 **Note:** In jmeter requests body data you can provide the option "${__UUID()}" in order to require jmeter to add a different UUID in each request's data since our database makes sure that the post request's data(username) is different than all existing followers currently in the database before adding the new record.  
 
+We also created our own load generator [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/load_generator) and a command line interface for extracting and visualising metrics [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/prom_metrics_cli).
+
 ### To monitor the health and behavior of our function we have to:
 
 ## 1. Port fortward Prometheus
@@ -320,4 +322,20 @@ alias kgd="sudo kubectl get deploy --all-namespaces"
 EOF
 
 # In case you are using zsh as the default shell for your user you could use the same command as above by replacing "bashrc" either with "zshrc" or "profile"
+```
+
+### In order to remove the whole project you have to run the following commands:
+```bash 
+# remove openfaas
+sudo kubectl delete namespace openfaas openfaas-fn
+# remove mongodb
+cd mongodb/
+sudo kubectl delete -f .
+cd ..
+```
+### If you want to completely delete the k3d cluster you have to run the following command:
+```bash
+sudo k3d cluster delete <cluster_name>
+# where cluster name can be found from the following command
+sudo k3d cluster list 
 ```
