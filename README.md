@@ -1,9 +1,5 @@
 *This tutorial has only been tested on ubuntu 18.04 and 20.04*
 
-**Note:** that in our case we are using sudo before kubectl because we setup the cluster using k3d, if for example we set it up using kubeadm in a real development environment this would be of no use.
-If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/kubeadm_tutorial/README.md).
-
-
 # Deploying openfaas on a local k3d cluster
 
 ### First of all, clone the repo, open an ubuntu terminal and change your working directory withing the repo.
@@ -76,6 +72,15 @@ cd ../
 sudo docker network connect k3d-k3s-default registry.localhost
 ```
 
+Move cluster configuration file to user so you can use it without sudo
+```bash
+mkdir ~/.kube
+# move config to user 
+sudo cp /root/.kube/config ~/.kube/config
+# change permission to make config accessible by kubectl
+chmod 777 ~/.kube/config
+```
+
 ## 3. arkade
 arkade provides a portable marketplace for downloading your favourite devops CLIs and installing helm charts, with a single command.
 To install arkade run:
@@ -89,9 +94,9 @@ curl -sLS https://get.arkade.dev | sudo sh
 To install openfaas using arkade, run the following:
 ``` bash
 # Install openfaas for synchronous requests
-sudo arkade install openfaas
+arkade install openfaas
 # In the case that you want to use queue workers and make asynchronous requests to openfaas functions you have to use this command instead
-sudo arkade install openfaas --max-inflight=2
+arkade install openfaas --max-inflight=2
 # For more info on async requests check this:
 # https://docs.openfaas.com/reference/async/
 # Install faas-cli
@@ -107,7 +112,7 @@ sudo mv ~/.arkade/bin/faas-cli /usr/local/bin/
 cd mongodb/
 ```
 ``` bash
-sudo kubectl apply -f .
+kubectl apply -f .
 ```
 ``` bash
 cd ../
@@ -115,7 +120,7 @@ cd ../
 
 Wait untill all three pods are deployed and then run:
 ``` bash
-sudo kubectl exec -it mongodb-replica-0 -n default -- mongo
+kubectl exec -it mongodb-replica-0 -n default -- mongo
 ```
 ### And within the mongo shell:
 ```
@@ -156,9 +161,9 @@ exit
 ### Now port-fortward openfaas' service and login via your terminal:
 ``` bash
 # port forward
-sudo kubectl port-forward -n openfaas svc/gateway 8080:8080
+kubectl port-forward -n openfaas svc/gateway 8080:8080
 # save password to $PASSWORD env variable
-PASSWORD=$(sudo kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
+PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
 # login using the variable
 echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
 ```
@@ -183,7 +188,7 @@ sudo faas-cli up -f test-db.yml --label com.openfaas.scale.max=3 --label com.ope
 sudo faas-cli up -f test-db.yml --label com.openfaas.scale.max=2 --label com.openfaas.scale.min=2 --env max_inflight=1000
 cd ../
 # You can also always check the "queue-worker"'s logs like that
-sudo kubectl logs deploy/queue-worker -n openfaas -f
+kubectl logs deploy/queue-worker -n openfaas -f
 ```
 
 Now you are ready to hit the endpoint either via browser (by visiting http://localhost:8080/) and making manual requests or via the terminal by executing either one of the following commands:
@@ -216,11 +221,11 @@ Grafana is a multi-platform visualization software available since 2014. Grafana
 You can install Grafane via arkade using:
 
 ``` bash
-sudo arkade install grafana
+arkade install grafana
 ```
 ### Get secret password:
 ``` bash
-sudo kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 Save this secret password as you will need it for logging into the Grafana dashboard.
 
@@ -283,13 +288,13 @@ We also created our own load generator [here](https://github.com/dimgatz98/openf
 
 ## 1. Port fortward Prometheus
 ```
-sudo kubectl port-forward -n openfaas svc/prometheus 9090:9090
+kubectl port-forward -n openfaas svc/prometheus 9090:9090
 ```
 
 ## 2. Port forward Grafana
 
 ```
-sudo kubectl --namespace grafana port-forward service/grafana 3000:80
+kubectl --namespace grafana port-forward service/grafana 3000:80
 ```
 
 Finally, you can visit prom and grafana dashboards here:
@@ -307,18 +312,18 @@ Configuration (on the left bar) > Data Sources > Add data source > Select Promet
 
 ## A couple useful aliases I like to use for kubectl:
 ```bash
-alias kgp="sudo kubectl get pods --all-namespaces"
-alias kgn="sudo kubectl get nodes"
-alias kgd="sudo kubectl get deploy"
+alias kgp="kubectl get pods --all-namespaces"
+alias kgn="kubectl get nodes"
+alias kgd="kubectl get deploy"
 ```
 
 **You can also permanently add all of them in your shell script configuration with the following command:**
 ```bash
 cat <<EOF | tee -a ~/.bashrc && source ~/.bashrc
 
-alias kgp="sudo kubectl get pods --all-namespaces"
-alias kgn="sudo kubectl get nodes --all-namespaces"
-alias kgd="sudo kubectl get deploy --all-namespaces"
+alias kgp="kubectl get pods --all-namespaces"
+alias kgn="kubectl get nodes --all-namespaces"
+alias kgd="kubectl get deploy --all-namespaces"
 EOF
 
 # In case you are using zsh as the default shell for your user you could use the same command as above by replacing "bashrc" either with "zshrc" or "profile"
@@ -327,10 +332,10 @@ EOF
 ### In order to remove the whole project you have to run the following commands:
 ```bash 
 # remove openfaas
-sudo kubectl delete namespace openfaas openfaas-fn
+kubectl delete namespace openfaas openfaas-fn
 # remove mongodb
 cd mongodb/
-sudo kubectl delete -f .
+kubectl delete -f .
 cd ..
 ```
 ### If you want to completely delete the k3d cluster you have to run the following command:
@@ -339,3 +344,6 @@ sudo k3d cluster delete <cluster_name>
 # where cluster name can be found from the following command
 sudo k3d cluster list 
 ```
+
+If you want to learn how to setup kubernetes using kubeadm click [here](https://github.com/dimgatz98/openfaas_plhroforiaka/tree/main/kubeadm_tutorial/README.md).
+
