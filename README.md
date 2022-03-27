@@ -261,7 +261,7 @@ Once downloaded, unzip the downloaded file with the following command:
 unzip apache-jmeter-5.3.zip
 ```
 
-## Step 4: Step 5 - Launch the Apache JMeter Application
+## Step 4: Launch the Apache JMeter Application
 
 Next, change the directory to the JMeter:
 
