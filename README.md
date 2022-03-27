@@ -57,10 +57,6 @@ wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bas
 ```
 
 ``` bash
-sudo docker network connect k3d-k3s-default registry.localhost
-```
-
-``` bash
 # Let's create the volume we are going to use as the registry for openfaas to push and pull images among the pods
 sudo docker volume create local_registry
 ```
@@ -75,6 +71,10 @@ cd k3d_registries
 sudo k3d cluster create --volume $PWD/k3d-registries.yml:/etc/rancher/k3s/registries.yaml --agents 3
 cd ../
 ``` 
+
+``` bash
+sudo docker network connect k3d-k3s-default registry.localhost
+```
 
 ## 3. arkade
 arkade provides a portable marketplace for downloading your favourite devops CLIs and installing helm charts, with a single command.
