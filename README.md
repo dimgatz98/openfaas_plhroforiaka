@@ -165,7 +165,7 @@ kubectl port-forward -n openfaas svc/gateway 8080:8080
 # save password to $PASSWORD env variable
 PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
 # login using the variable
-echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
+echo -n $PASSWORD | faas-cli login --username admin --password-stdin
 ```
 
 ## Create openfaas secret to store root password:
